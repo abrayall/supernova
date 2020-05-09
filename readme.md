@@ -1,3 +1,3 @@
-<img src="logo.png" width="600px" />
+<img src="logo.svg" />
 
 # Supernova - Model Rocket Hardware and Software Platform
