@@ -1,6 +1,6 @@
 <img src="logo.svg" />
 
-# Model Rocket Hardware and Software Platform
+# Model Rocket Platform
 
 #### Flight Computer
 The Supernova [flight computer](flight-computer) is a set of hardware designed to fit into a model rocket.  The hardware is able to record flight data and video.
