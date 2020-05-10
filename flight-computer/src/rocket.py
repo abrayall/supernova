@@ -39,6 +39,7 @@ class Rocket:
 
     def arm(self):
         self.state = 'armed'
+        self.accelerometer.tare()
         threading.Thread(target=self.camera.record).start()
         threading.Thread(target=self.record).start()
         print('Rocket armed and recording...')
@@ -70,7 +71,7 @@ class Camera:
         self.state = 'initialized'
 
     def record(self):
-        os.makedirs(datetime.now().strftime('data/%Y-%m-%d'), exist_ok=True)
+        os.makedirs(datetime.now().strftime('data/%Y-%m-%d/%H:%M:%S'), exist_ok=True)
         self.camera.annotate_text = datetime.now().strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
         self.camera.start_recording(datetime.now().strftime('data/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.h264'))
         self.state = 'recording'
@@ -78,7 +79,7 @@ class Camera:
         while self.state == 'recording':
             self.camera.annotate_text = datetime.now().strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
             self.camera.wait_recording(.3)
-            self.camera.capture(datetime.now().strftime('data/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.jpg'), use_video_port=True)
+            self.camera.capture(datetime.now().strftime('data/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.%f.jpg'), use_video_port=True)
 
     def stop(self):
         self.state = 'initialized'
