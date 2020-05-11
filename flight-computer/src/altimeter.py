@@ -13,19 +13,19 @@ class Altimeter:
         self.bmp.pressure_oversampling = 8
         self.bmp.temperature_oversampling = 2
         self.bmp.sealevel_pressure = 1013.25
-        self.tare = 0
+        self.base = 0
 
     def altitude(self):
-        return (self.tare - self.bmp.altitude) * 3.28
+        return (self.base - self.bmp.altitude) * 3.28
 
     def tare(self):
         count = 0
         total = 0
 
-        for i range(1, 10):
+        for i in range(1, 10):
             time.sleep(.1)
             count = count + 1
-            total = total + altimeter.bmp.altitude
+            total = total + self.bmp.altitude
 
-        self.tare = total / count
+        self.base = total / count
         return self

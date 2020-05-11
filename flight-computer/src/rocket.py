@@ -39,22 +39,22 @@ class Rocket:
 
     def arm(self):
         self.state = 'armed'
-        self.accelerometer.tare()
+        self.altimeter.tare()
         threading.Thread(target=self.camera.record).start()
         threading.Thread(target=self.record).start()
         print('Rocket armed and recording...')
         return True
 
     def record(self):
+        os.makedirs(datetime.now().strftime('data/%Y-%m-%d'), exist_ok=True)
         file = open(datetime.now().strftime('data/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.data'), 'w+')
+
         loop = 0
         while self.state == 'armed':
             file.write('%d,%d\n' % (int(round(time.time() * 1000)), self.altimeter.altitude()))
             loop = loop + 1
             if loop % 10 == 0:
                 file.flush()
-
-            #time.sleep(.1)
 
         file.close()
 
@@ -67,11 +67,12 @@ class Rocket:
 class Camera:
     def __init__(self, rocket):
         self.rocket = rocket
+        #self.camera = picamera.PiCamera(resolution=(1280, 720), framerate=30)
         self.camera = picamera.PiCamera(resolution=(1920, 1080), framerate=30)
         self.state = 'initialized'
 
     def record(self):
-        os.makedirs(datetime.now().strftime('data/%Y-%m-%d/%H:%M:%S'), exist_ok=True)
+        os.makedirs(datetime.now().strftime('data/%Y-%m-%d'), exist_ok=True)
         self.camera.annotate_text = datetime.now().strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
         self.camera.start_recording(datetime.now().strftime('data/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.h264'))
         self.state = 'recording'
@@ -90,6 +91,5 @@ class Camera:
 
 if __name__ == '__main__':
     rocket = Rocket()
-
     while True:
         time.sleep(10)

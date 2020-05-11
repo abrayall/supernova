@@ -1,0 +1,17 @@
+<html>
+	<head>
+		<title>{{ escape(rocket.info.get('name')) }}</title>
+	</head>
+	<body>
+		<ul>
+			{% for directory in os.listdir('data') %}
+				<li>{{ escape(directory) }}</li>
+				<ul>	
+					{% for file in os.listdir('data/' + directory) %}
+						<li><a href='/download/{{ escape(directory + '/' + file) }}'>{{ escape(file) }}</a></li>
+					{% end %}
+				</ul>
+			{% end %}
+		<ul>
+	</body>
+</html>
