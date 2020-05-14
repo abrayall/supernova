@@ -4,14 +4,13 @@
 	</head>
 	<body>
 		<ul>
-			{% for directory in os.listdir('data') %}
-				<li>{{ escape(directory) }}</li>
-				<ul>	
-					{% for file in os.listdir('data/' + directory) %}
-						<li><a href='/download/{{ escape(directory + '/' + file) }}'>{{ escape(file) }}</a></li>
-					{% end %}
-				</ul>
+			{% for file in sorted(os.listdir(directory)) %}
+			  {% if os.path.isfile(directory + '/' + file) %}
+					<li><a href='/download/{{ escape(directory + '/' + file) }}'>{{ escape(file) }}</a></li>
+				{% else %}
+				  <li><a href='/?directory={{ escape(directory + '/' + file) }}'>{{ escape(file) }}</a></li>
+				{% end %}
 			{% end %}
-		<ul>
+		</ul>
 	</body>
 </html>

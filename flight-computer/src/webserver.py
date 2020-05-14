@@ -9,8 +9,8 @@ class WebServer:
     def __init__(self, rocket={}):
         self.rocket = rocket
         self.app = tornado.web.Application([
-            (r"/", WebHandler, dict(rocket=self.rocket)),
-            (r"/download/(.*)", tornado.web.StaticFileHandler, {'path': 'data'})
+            ("/download/(.*)", tornado.web.StaticFileHandler, {'path': '.'}),
+            ("/(.*)", WebHandler, dict(rocket=self.rocket)),
         ])
 
     def start(self):
@@ -21,8 +21,5 @@ class WebHandler(tornado.web.RequestHandler):
     def initialize(self, rocket):
         self.rocket = rocket
 
-    def get(self):
-        self.write(tornado.template.Loader("resources/html").load("index.html").generate(rocket=self.rocket, os=os))
-
-
-
+    def get(self, slug):
+        self.write(tornado.template.Loader("resources/html").load("index.html").generate(rocket=self.rocket, os=os, directory=self.get_argument('directory', 'data')))
