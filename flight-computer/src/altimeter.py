@@ -16,7 +16,7 @@ class Altimeter:
         self.base = 0
 
     def altitude(self):
-        return (self.base - self.bmp.altitude) * 3.28
+        return (self.bmp.altitude - self.base) * 3.28
 
     def tare(self):
         count = 0
