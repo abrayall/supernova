@@ -33,7 +33,7 @@ class Rocket:
         self.webserver = webserver.WebServer(self).start()
         self.state = 'ready'
         self.led = gpiozero.LED(10)
-        self.led.blink(1, 0, 3)
+        self.led.blink(1, 1, 3)
 
         print(self.info.get('name') + ' is ready!')
         return
