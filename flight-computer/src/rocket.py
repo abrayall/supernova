@@ -6,6 +6,7 @@ import properties
 
 import busio
 import board
+import gpiozero
 import picamera
 import altimeter
 
@@ -31,11 +32,14 @@ class Rocket:
 
         self.webserver = webserver.WebServer(self).start()
         self.state = 'ready'
+        self.led = gpiozero.LED(10)
+        self.led.blink(1, 0, 3)
 
         print(self.info.get('name') + ' is ready!')
         return
 
     def pair(self, launchpad):
+        self.led.on()
         print('Paired with ' + launchpad['name'])
 
     def arm(self):
@@ -45,6 +49,7 @@ class Rocket:
         location = datetime.now().strftime('data/%Y-%m-%d/%H-%M-%S')
         threading.Thread(target=lambda: self.camera.record(location)).start()
         threading.Thread(target=lambda: self.record(location)).start()
+        self.led.blink(.3, .3)
         print(self.info.get('name') + ' armed and recording...')
         return True
 
@@ -64,6 +69,7 @@ class Rocket:
     def disarm(self):
         self.state = 'ready'
         self.camera.stop()
+        self.led.off()
         print(self.info.get('name') + ' disarmed.')
         return True
 
