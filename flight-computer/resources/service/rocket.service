@@ -1,0 +1,14 @@
+[Unit]
+Description=Rocket 
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u rocket.py
+WorkingDirectory=/opt/supernova/flight-computer
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
