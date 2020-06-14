@@ -13,12 +13,13 @@ class State:
     def get(self):
         return self.state
 
-    def append(self, timestamp, altitude):
+    def update(self, timestamp, altitude):
         if (self.altitudes.last != None):
             self.analyze(timestamp, altitude)
 
         self.timestamps.append(timestamp)
         self.altitudes.append(altitude)
+        return
 
     def analyze(self, timestamp, altitude):
         difference = self.difference(self.altitudes.last, altitude)
@@ -48,6 +49,8 @@ class State:
         elif (self.state == 'landed' and timestamp - self.events['landing'][0] > 5000):
             print('complete')
             self.state = 'complete'
+            
+        return
 
     def rate(self):
         return differce

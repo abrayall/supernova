@@ -51,6 +51,7 @@ class Rocket:
         location = datetime.now().strftime('data/%Y-%m-%d/%H-%M-%S')
         threading.Thread(target=lambda: self.camera.record(location)).start()
         threading.Thread(target=lambda: self.record(location)).start()
+
         self.led.blink(.3, .3)
         print(self.info.get('name') + ' armed and recording...')
         return True
@@ -60,10 +61,10 @@ class Rocket:
         file = open(datetime.now().strftime(location + '/data.csv'), 'w+')
 
         loop = 0
-        while self.state.get() == 'armed':
+        while self.state.get() != 'complete':
             now = int(round(time.time() * 1000))
             altitude = self.altimeter.altitude()
-            this.state.append(now, altitude)
+            self.state.update(now, altitude)
 
             file.write('%d,%d\n' % (now, altitude))
             loop = loop + 1
@@ -71,7 +72,7 @@ class Rocket:
                 file.flush()
 
         file.close()
-        return stats
+        return
 
     def disarm(self):
         self.state.set('ready')
