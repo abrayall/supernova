@@ -13,9 +13,6 @@ import altimeter
 import webserver
 import launchpad
 
-import numpy
-import numpy_ringbuffer
-
 from datetime import datetime
 
 class Rocket:
@@ -106,7 +103,7 @@ class Camera:
         self.state = 'initialized'
         self.camera.stop_recording()
 
-        
+
 if __name__ == '__main__':
     rocket = Rocket()
     if len(sys.argv) > 1:
