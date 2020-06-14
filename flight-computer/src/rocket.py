@@ -106,5 +106,13 @@ class Camera:
         self.state = 'initialized'
         self.camera.stop_recording()
 
-    def picture(self):
-        return None
+        
+if __name__ == '__main__':
+    rocket = Rocket()
+    if len(sys.argv) > 1:
+        rocket.arm()
+        time.sleep(int(sys.argv[1]))
+        rocket.disarm()
+
+    while True:
+        time.sleep(10)
