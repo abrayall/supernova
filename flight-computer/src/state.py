@@ -4,8 +4,8 @@ import numpy
 class State:
     def __init__(self, rocket):
         self.state = 'ready'
-        self.timestamps = buffer.Buffer(100, numpy.int)
-        self.altitudes = buffer.Buffer(100, numpy.int)
+        self.timestamps = buffer.Buffer()
+        self.altitudes = buffer.Buffer()
         self.events = {}
 
     def set(self, state):

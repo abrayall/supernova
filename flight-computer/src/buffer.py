@@ -1,14 +1,14 @@
 import numpy
 import numpy_ringbuffer
 
-class Buffer(numpy_ringbuffer.RingBuffer):
-    def __init__(self, capacity, data_type=numpy.int, allow_overwrite=True):
+class Buffer:
+    def __init__(self):
         self.last = None
-        super().__init__(capacity, data_type, allow_overwrite)
+        self.previous = None
 
     def append(self, value):
+        self.previous = self.last
         self.last = value
-        super().append(value)
 
 if __name__ == '__main__':
     rocket = Rocket()
