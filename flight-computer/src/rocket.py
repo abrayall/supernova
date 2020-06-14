@@ -61,11 +61,11 @@ class Rocket:
 
         loop = 0
         while self.state.get() == 'armed':
-            time = int(round(time.time() * 1000))
+            now = int(round(time.time() * 1000))
             altitude = self.altimeter.altitude()
-            this.state.append(time, altitude)
+            this.state.append(now, altitude)
 
-            file.write('%d,%d\n' % (time, altitude))
+            file.write('%d,%d\n' % (now, altitude))
             loop = loop + 1
             if loop % 10 == 0:
                 file.flush()
