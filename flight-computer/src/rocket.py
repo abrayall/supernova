@@ -10,6 +10,7 @@ import gpiozero
 import picamera
 import altimeter
 
+import state
 import webserver
 import launchpad
 
