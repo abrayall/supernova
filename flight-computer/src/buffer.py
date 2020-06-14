@@ -1,6 +1,3 @@
-import numpy
-import numpy_ringbuffer
-
 class Buffer:
     def __init__(self):
         self.last = None
