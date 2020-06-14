@@ -25,7 +25,7 @@ class Rocket:
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.altimeter = altimeter.Altimeter(self.i2c)
         self.accelerometer = None
-        self.state = State(self)
+        self.state = state.State(self)
 
         self.launchpad = launchpad.Client(self.info.get('name'))
         self.launchpad.on_pair_handler = lambda launchpad: self.pair(launchpad)
