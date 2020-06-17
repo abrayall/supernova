@@ -95,10 +95,13 @@ class Camera:
         self.camera.start_recording(datetime.now().strftime(location + '/video.h264'))
         self.state = 'recording'
 
+        last = datetime.now()
         while self.state == 'recording':
-            self.camera.annotate_text = datetime.now().strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
-            self.camera.capture(datetime.now().strftime(location + '/image-%H-%M-%S.%f.jpg'), use_video_port=True)
-            self.camera.wait_recording(.1)
+            now = datetime.now()
+            self.camera.annotate_text = now.strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
+            if (now.timestamp() - last.timestamp() > 1000):
+                self.camera.capture(now.strftime(location + '/image-%H-%M-%S.%f.jpg'), use_video_port=True)
+                last = now
 
 
     def stop(self):

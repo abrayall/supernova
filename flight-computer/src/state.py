@@ -25,7 +25,7 @@ class State:
         difference = self.difference(self.altitudes.last, altitude)
         duration = self.duration(self.timestamps.last, timestamp)
         rate = (difference / duration) * 1000
-        #print('     ', rate, difference, duration)
+        print('     ', rate, difference, duration)
         if (self.state == 'armed' and difference > 1):
             print('launch detected', self.altitudes.last)
             self.events['launch'] = (self.timestamps.last, self.altitudes.last)
@@ -49,7 +49,7 @@ class State:
         elif (self.state == 'landed' and timestamp - self.events['landing'][0] > 5000):
             print('complete')
             self.state = 'complete'
-            
+
         return
 
     def rate(self):
