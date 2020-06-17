@@ -48,9 +48,9 @@ class Rocket:
         self.state.set('armed')
         self.altimeter.tare()
 
-        location = datetime.now().strftime('data/%Y-%m-%d/%H-%M-%S')
-        threading.Thread(target=lambda: self.camera.record(location)).start()
-        threading.Thread(target=lambda: self.record(location)).start()
+        self.location = datetime.now().strftime('data/%Y-%m-%d/%H-%M-%S')
+        threading.Thread(target=lambda: self.camera.record(self.location)).start()
+        threading.Thread(target=lambda: self.record(self.location)).start()
 
         self.led.blink(.3, .3)
         print(self.info.get('name') + ' armed and recording...')
@@ -63,7 +63,7 @@ class Rocket:
         loop = 0
         while self.state.get() != 'complete':
             now = int(round(time.time() * 1000))
-            altitude = self.altimeter.altitude()
+            altitude = int(self.altimeter.altitude())
             self.state.update(now, altitude)
 
             file.write('%d,%d\n' % (now, altitude))
@@ -79,6 +79,12 @@ class Rocket:
         self.camera.stop()
         self.led.off()
         print(self.info.get('name') + ' disarmed.')
+
+        file = open(datetime.now().strftime(self.location + '/events.csv'), 'w+')
+        for event in ['launch', 'apogee', 'descent', 'landing']:
+            if event in self.state.events:
+                file.write(event + ',' + str(self.state.events[event][0]) + ',altitude=' + str(self.state.events[event][1]) + '\n')
+        file.close()
         return True
 
 
@@ -102,7 +108,6 @@ class Camera:
             if (now.timestamp() - last.timestamp() > 2):
                 self.camera.capture(now.strftime(location + '/image-%H-%M-%S.%f.jpg'), use_video_port=True)
                 last = now
-
 
     def stop(self):
         self.state = 'initialized'

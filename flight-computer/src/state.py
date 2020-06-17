@@ -3,6 +3,7 @@ import buffer
 class State:
     def __init__(self, rocket):
         self.state = 'ready'
+        self.rocket = rocket
         self.timestamps = buffer.Buffer()
         self.altitudes = buffer.Buffer()
         self.events = {}
@@ -48,6 +49,7 @@ class State:
         elif (self.state == 'landed' and timestamp - self.events['landing'][0] > 5000):
             print('complete')
             self.state = 'complete'
+            self.rocket.disarm()
 
         return
 
