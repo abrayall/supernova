@@ -99,7 +99,7 @@ class Camera:
         while self.state == 'recording':
             now = datetime.now()
             self.camera.annotate_text = now.strftime(self.rocket.info.get('name') + ' %Y-%m-%d %H:%M:%S.%f')[:-3] + ' ' + str(round(self.rocket.altimeter.altitude())) + ' feet'
-            if (now.timestamp() - last.timestamp() > 1000):
+            if (now.timestamp() - last.timestamp() > 2):
                 self.camera.capture(now.strftime(location + '/image-%H-%M-%S.%f.jpg'), use_video_port=True)
                 last = now
 
